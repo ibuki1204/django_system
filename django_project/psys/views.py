@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Customer
 from .forms import CustomerForm
-from django.shortcuts import redirect
 
+
+def index(request):
+    return render(request, "psys/index.html")
 
 
 def customer_search(request):
@@ -22,8 +24,6 @@ def customer_search(request):
         "keyword": keyword
     })
 
-def index(request):
-    return render(request, "psys/index.html")
 
 def customer_list(request):
     customers = Customer.objects.all()
@@ -32,6 +32,7 @@ def customer_list(request):
     return render(request, "psys/customer_list.html", {
         "customers": customers
     })
+
 
 def customer_regist(request):
     if request.method == "POST":
@@ -47,8 +48,10 @@ def customer_regist(request):
 
     return render(request, "psys/customer_regist.html", {"form": form})
 
-def customer_update(request, customer_id):
-    customer = Customer.objects.get(customer_id=customer_id)
+
+# ★ ここから customer_id → customer_code に変更
+def customer_update(request, customer_code):
+    customer = Customer.objects.get(customer_code=customer_code)
 
     if request.method == "POST":
         form = CustomerForm(request.POST, instance=customer)
@@ -65,10 +68,9 @@ def customer_update(request, customer_id):
         "customer": customer,
     })
 
-def customer_delete(request, customer_id):
-    customer = Customer.objects.get(customer_id=customer_id)
+
+def customer_delete(request, customer_code):
+    customer = Customer.objects.get(customer_code=customer_code)
     customer.delete()
     messages.success(request, "得意先を削除しました")
     return redirect("customer_list")
-
-
