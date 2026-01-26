@@ -18,19 +18,24 @@
 
 <table border="1">
   <tr>
-    <th>ID</th>
+    <th>コード</th>
     <th>名前</th>
-    <th>Email</th>
+    <th>電話</th>
+    <th>郵便番号</th>
+    <th>住所</th>
   </tr>
   {% for c in customers %}
   <tr>
-    <td>{{ c.customer_id }}</td>
+    <td>{{ c.customer_code }}</td>
     <td>{{ c.customer_name }}</td>
-    <td>{{ c.email }}</td>
+    <td>{{ c.customer_telno }}</td>
+    <td>{{ c.customer_postalcode }}</td>
+    <td>{{ c.customer_address }}</td>
   </tr>
   {% endfor %}
 </table>
 
-<a href="/">トップへ戻る</a>
+<p><a href="/">トップへ戻る</a></p>
 </body>
 </html>
+

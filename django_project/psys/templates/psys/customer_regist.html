@@ -13,8 +13,15 @@
 
   <form method="post">
     {% csrf_token %}
+
+    <p>得意先コード：{{ form.customer_code }}</p>
     <p>得意先名：{{ form.customer_name }}</p>
-    <p>Email：{{ form.email }}</p>
+    <p>電話番号：{{ form.customer_telno }}</p>
+    <p>郵便番号：{{ form.customer_postalcode }}</p>
+    <p>住所：{{ form.customer_address }}</p>
+    <p>割引率：{{ form.discount_rate }}</p>
+    <p>削除フラグ：{{ form.delete_flag }}</p>
+
     <button type="submit">登録</button>
   </form>
 
