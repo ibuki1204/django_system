@@ -21,9 +21,9 @@ def customer_search(request):
     keyword = request.GET.get("keyword", "")
 
     if keyword:
-        customers = Customer.objects.filter(customer_name__contains=keyword)
+        customers = Customer.objects.filter(delete_flag=0, customer_name__contains=keyword)
     else:
-        customers = Customer.objects.all()
+        customers = Customer.objects.filter(delete_flag=0)
 
     if not customers.exists():
         messages.error(request, "該当する得意先がありません")
@@ -33,29 +33,34 @@ def customer_search(request):
         "keyword": keyword
     })
 
+
 @login_required
 def customer_list(request):
-    customers = Customer.objects.all()
+    customers = Customer.objects.filter(delete_flag=0)
     if not customers.exists():
         messages.error(request, "得意先データがありません")
     return render(request, "psys/customer_list.html", {
         "customers": customers
     })
 
+
 @login_required
 def customer_regist(request):
     if request.method == "POST":
         form = CustomerForm(request.POST)
         if form.is_valid():
-            form.save()
+            customer = form.save(commit=False)
+            customer.delete_flag = 0
+            customer.save()
             messages.success(request, "得意先を登録しました")
-            form = CustomerForm()  # 入力欄を空にする
+            return redirect("customer_list")
         else:
             messages.error(request, "入力に誤りがあります")
     else:
         form = CustomerForm()
 
     return render(request, "psys/customer_regist.html", {"form": form})
+
 
 
 # ★ ここから customer_id → customer_code に変更
