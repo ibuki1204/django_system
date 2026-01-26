@@ -21,6 +21,9 @@ urlpatterns = [
 
     path("customer/summary/", views.customer_summary, name="customer_summary"),
 
+    path("customer/summary/detail/<str:customer_code>/", views.customer_summary_detail, name="customer_summary_detail"),
+
+
 ]
 
 

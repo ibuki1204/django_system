@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>受注一覧（得意先別）</title>
+</head>
+<body>
+
+<h1>受注一覧（得意先別）</h1>
+<p>ようこそ、{{ request.user.first_name|default:request.user.username }} さん</p>
+
+<p>
+  得意先：{{ customer.customer_code }} / {{ customer.customer_name }}
+</p>
+
+{% if date_from or date_to %}
+<p>
+  期間：{{ date_from|default:"(指定なし)" }} ～ {{ date_to|default:"(指定なし)" }}
+</p>
+{% endif %}
+
+<table border="1">
+  <tr>
+    <th>受注番号</th>
+    <th>受注日</th>
+    <th>納品日</th>
+    <th>担当者</th>
+    <th>合計金額</th>
+    <th>明細数</th>
+  </tr>
+
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.order_no }}</td>
+    <td>{{ o.order_date }}</td>
+    <td>{{ o.deliver_date }}</td>
+    <td>
+      {% if o.employee_no %}
+        {{ o.employee_no.employee_name }}（{{ o.employee_no.employee_no }}）
+      {% else %}
+        -
+      {% endif %}
+    </td>
+    <td>{{ o.total_price }}</td>
+    <td>{{ o.detail_num }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">受注データがありません</td></tr>
+  {% endfor %}
+</table>
+
+<p>
+  <a href="{% url 'customer_summary' %}?from={{ date_from }}&to={{ date_to }}">得意先別集計へ戻る</a> /
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+
+</body>
+</html>

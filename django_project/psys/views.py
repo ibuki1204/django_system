@@ -137,3 +137,27 @@ def customer_summary(request):
         "date_to": date_to,
     })
 
+@login_required
+def customer_summary_detail(request, customer_code):
+    date_from = request.GET.get("from", "")
+    date_to = request.GET.get("to", "")
+
+    customer = get_object_or_404(Customer, customer_code=customer_code)
+
+    orders_qs = Orders.objects.filter(customer_code=customer)
+
+    # 期間指定（集計画面から引き継ぐ）
+    if date_from:
+        orders_qs = orders_qs.filter(order_date__gte=date_from)
+    if date_to:
+        orders_qs = orders_qs.filter(order_date__lte=date_to)
+
+    orders_qs = orders_qs.order_by("-order_date", "-order_no")
+
+    return render(request, "psys/customer_summary_detail.html", {
+        "customer": customer,
+        "orders": orders_qs,
+        "date_from": date_from,
+        "date_to": date_to,
+    })
+
