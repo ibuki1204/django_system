@@ -31,7 +31,7 @@
 
   {% for o in orders %}
   <tr>
-    <td>{{ o.order_no }}</td>
+    <td><a href="{% url 'order_details' o.order_no %}">{{ o.order_no }}</a></td>
     <td>{{ o.order_date }}</td>
     <td>{{ o.deliver_date }}</td>
     <td>

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Customer, Orders
+from .models import Customer, Orders, OrderDetails
 from .forms import CustomerForm, CustomerUpdateForm
 from django.db.models import Sum, Count
 
@@ -159,5 +159,24 @@ def customer_summary_detail(request, customer_code):
         "orders": orders_qs,
         "date_from": date_from,
         "date_to": date_to,
+    })
+
+@login_required
+def order_details(request, order_no):
+    order = get_object_or_404(Orders, order_no=order_no)
+
+    details = (
+        OrderDetails.objects
+        .filter(order_no=order)          # FKならこれでOK
+        .select_related("item_code")     # item_code がFKなら商品名も取れる
+        .order_by("item_code")
+    )
+
+    total_detail = details.aggregate(s=Sum("order_price"))["s"] or 0
+
+    return render(request, "psys/order_details.html", {
+        "order": order,
+        "details": details,
+        "total_detail": total_detail,
     })
 

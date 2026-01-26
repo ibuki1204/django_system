@@ -23,6 +23,9 @@ urlpatterns = [
 
     path("customer/summary/detail/<str:customer_code>/", views.customer_summary_detail, name="customer_summary_detail"),
 
+    path("orders/<str:order_no>/details/", views.order_details, name="order_details"),
+
+
 
 ]
 

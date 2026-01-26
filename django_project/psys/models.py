@@ -43,3 +43,24 @@ class Orders(models.Model):
         managed = False
         db_table = 'orders'
 
+class OrderDetails(models.Model):
+    order_no = models.OneToOneField('Orders', models.DO_NOTHING, db_column='order_no', primary_key=True)  # The composite primary key (order_no, item_code) found, that is not supported. The first column is selected.
+    item_code = models.ForeignKey('Item', models.DO_NOTHING, db_column='item_code')
+    order_num = models.IntegerField(blank=True, null=True)
+    order_price = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'order_details'
+        unique_together = (('order_no', 'item_code'),)
+
+class Item(models.Model):
+    item_code = models.CharField(primary_key=True, max_length=6)
+    item_name = models.CharField(max_length=32, blank=True, null=True)
+    price = models.IntegerField(blank=True, null=True)
+    stock = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'item'
+
