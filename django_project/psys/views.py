@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Customer
+from .models import Customer, Orders
 from .forms import CustomerForm, CustomerUpdateForm
-
+from django.db.models import Sum, Count
 
 @login_required
 def main_menu(request):
@@ -105,4 +105,35 @@ def customer_delete(request, customer_code):
 @login_required
 def customer_delete_result(request, customer_code):
     return render(request, "psys/customer_delete_result.html", {"customer_code": customer_code})
+
+@login_required
+def customer_summary(request):
+    date_from = request.GET.get("from", "")
+    date_to = request.GET.get("to", "")
+
+    orders_qs = Orders.objects.all()
+
+    # 期間指定（任意）
+    if date_from:
+        orders_qs = orders_qs.filter(order_date__gte=date_from)
+    if date_to:
+        orders_qs = orders_qs.filter(order_date__lte=date_to)
+
+    summary = (
+        orders_qs.values(
+            "customer_code__customer_code",
+            "customer_code__customer_name",
+        )
+        .annotate(
+            order_count=Count("order_no"),
+            total_amount=Sum("total_price"),
+        )
+        .order_by("customer_code__customer_code")
+    )
+
+    return render(request, "psys/customer_summary.html", {
+        "summary": summary,
+        "date_from": date_from,
+        "date_to": date_to,
+    })
 

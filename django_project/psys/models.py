@@ -30,3 +30,16 @@ class Employee(models.Model):
         managed = False
         db_table = 'employee'
 
+class Orders(models.Model):
+    order_no = models.CharField(primary_key=True, max_length=6)
+    customer_code = models.ForeignKey('Customer', models.DO_NOTHING, db_column='customer_code', blank=True, null=True)
+    employee_no = models.ForeignKey('Employee', models.DO_NOTHING, db_column='employee_no', blank=True, null=True)
+    total_price = models.IntegerField(blank=True, null=True)
+    detail_num = models.IntegerField(blank=True, null=True)
+    deliver_date = models.DateField(blank=True, null=True)
+    order_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'orders'
+

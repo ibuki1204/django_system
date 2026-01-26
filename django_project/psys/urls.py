@@ -18,6 +18,9 @@ urlpatterns = [
 
     path("customer/delete/<str:customer_code>/", views.customer_delete, name="customer_delete"),
     path("customer/delete/<str:customer_code>/result/", views.customer_delete_result, name="customer_delete_result"),
+
+    path("customer/summary/", views.customer_summary, name="customer_summary"),
+
 ]
 
 

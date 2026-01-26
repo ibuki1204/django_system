@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>得意先別集計</title>
+</head>
+<body>
+
+<h1>得意先別集計</h1>
+<p>ようこそ、{{ request.user.first_name|default:request.user.username }} さん</p>
+
+<form method="get">
+  <label>開始日：<input type="date" name="from" value="{{ date_from }}"></label>
+  <label>終了日：<input type="date" name="to" value="{{ date_to }}"></label>
+  <button type="submit">集計</button>
+</form>
+
+<table border="1">
+  <tr>
+    <th>得意先コード</th>
+    <th>得意先名</th>
+    <th>受注件数</th>
+    <th>受注合計</th>
+  </tr>
+
+  {% for row in summary %}
+  <tr>
+    <td>{{ row.customer_code__customer_code }}</td>
+    <td>{{ row.customer_code__customer_name }}</td>
+    <td>{{ row.order_count }}</td>
+    <td>{{ row.total_amount }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">データがありません</td></tr>
+  {% endfor %}
+</table>
+
+<p>
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+
+</body>
+</html>
