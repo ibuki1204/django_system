@@ -83,8 +83,10 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3307',
         'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        'charset': 'utf8mb4',
+        'use_unicode': True,
+    },
     }
 }
 
@@ -129,3 +131,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "customer_list"
+LOGOUT_REDIRECT_URL = "login"
+

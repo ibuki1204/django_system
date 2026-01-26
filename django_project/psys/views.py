@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Customer
-from .forms import CustomerForm
+from .forms import CustomerForm, CustomerUpdateForm
+
 
 
 def index(request):
@@ -54,14 +55,15 @@ def customer_update(request, customer_code):
     customer = Customer.objects.get(customer_code=customer_code)
 
     if request.method == "POST":
-        form = CustomerForm(request.POST, instance=customer)
+        form = CustomerUpdateForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
             messages.success(request, "得意先を更新しました")
+            return redirect("customer_list")  # 追加：更新後は一覧へ戻すのが自然
         else:
             messages.error(request, "入力に誤りがあります")
     else:
-        form = CustomerForm(instance=customer)
+        form = CustomerUpdateForm(instance=customer)
 
     return render(request, "psys/customer_update.html", {
         "form": form,
@@ -71,6 +73,8 @@ def customer_update(request, customer_code):
 
 def customer_delete(request, customer_code):
     customer = Customer.objects.get(customer_code=customer_code)
-    customer.delete()
+    customer.delete_flag = 1
+    customer.save()
     messages.success(request, "得意先を削除しました")
     return redirect("customer_list")
+

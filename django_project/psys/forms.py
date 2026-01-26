@@ -14,3 +14,15 @@ class CustomerForm(forms.ModelForm):
             "delete_flag",
         ]
 
+class CustomerUpdateForm(forms.ModelForm):
+    discount_rate = forms.IntegerField(required=False)
+
+    class Meta:
+        model = Customer
+        fields = [
+            "customer_name",
+            "customer_telno",
+            "customer_postalcode",
+            "customer_address",
+            "discount_rate",
+        ]
