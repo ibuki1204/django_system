@@ -3,15 +3,27 @@
 <head><meta charset="UTF-8"><title>得意先削除確認</title></head>
 <body>
   <h1>得意先削除確認</h1>
+
+
+  {% for message in messages %}
+    <p style="color:red">{{ message }}</p>
+  {% endfor %}
+
   <p>この得意先を削除（論理削除）します。よろしいですか？</p>
 
-  <p>コード：{{ customer.customer_code }}</p>
-  <p>得意先名：{{ customer.customer_name }}</p>
+  <table border="1">
+    <tr><th>得意先コード</th><td>{{ customer.customer_code }}</td></tr>
+    <tr><th>得意先名</th><td>{{ customer.customer_name }}</td></tr>
+    <tr><th>電話番号</th><td>{{ customer.customer_telno }}</td></tr>
+    <tr><th>郵便番号</th><td>{{ customer.customer_postalcode }}</td></tr>
+    <tr><th>住所</th><td>{{ customer.customer_address }}</td></tr>
+    <tr><th>割引率</th><td>{{ customer.discount_rate }}</td></tr>
+  </table>
 
   <form method="post">
     {% csrf_token %}
     <button type="submit">削除する</button>
-    <a href="{% url 'customer_list' %}">キャンセル</a>
+    <a href="{% url 'customer_delete_select' %}">キャンセル</a>
   </form>
 </body>
 </html>

@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Customer, Orders, OrderDetails
 from .forms import CustomerForm, CustomerUpdateForm
 from django.db.models import Sum, Count
+from .models import Employee
 
 @login_required
 def main_menu(request):
@@ -93,13 +94,22 @@ def customer_update_result(request, customer_code):
 def customer_delete(request, customer_code):
     customer = get_object_or_404(Customer, customer_code=customer_code)
 
+    # 追加：ログインユーザーの従業員情報をemployeeテーブルから取得（失敗しても落とさない）
+    employee = None
+    try:
+        employee = Employee.objects.get(employee_no=request.user.username)
+    except Exception:
+        employee = None
+
     if request.method == "POST":
         customer.delete_flag = 1
         customer.save()
         return redirect("customer_delete_result", customer_code=customer_code)
 
-    # GETは確認画面
-    return render(request, "psys/customer_delete.html", {"customer": customer})
+    return render(request, "psys/customer_delete.html", {
+        "customer": customer,
+        "employee": employee,  # 追加
+    })
 
 
 @login_required
@@ -180,3 +190,45 @@ def order_details(request, order_no):
         "total_detail": total_detail,
     })
 
+@login_required
+def customer_update_select(request):
+    customer = None
+    customer_code = ""
+
+    if request.method == "POST":
+        customer_code = request.POST.get("customer_code", "").strip()
+        if customer_code:
+            customer = Customer.objects.filter(delete_flag=0, customer_code=customer_code).first()
+            if customer:
+                # 見つかったら更新画面へ
+                return redirect("customer_update", customer_code=customer.customer_code)
+            messages.error(request, "該当する得意先がありません")
+        else:
+            messages.error(request, "得意先コードを入力してください")
+
+    return render(request, "psys/customer_update_select.html", {
+        "customer_code": customer_code,
+        "customer": customer,
+    })
+
+
+@login_required
+def customer_delete_select(request):
+    customer = None
+    customer_code = ""
+
+    if request.method == "POST":
+        customer_code = request.POST.get("customer_code", "").strip()
+        if customer_code:
+            customer = Customer.objects.filter(delete_flag=0, customer_code=customer_code).first()
+            if customer:
+                # 見つかったら削除確認画面へ
+                return redirect("customer_delete", customer_code=customer.customer_code)
+            messages.error(request, "該当する得意先がありません")
+        else:
+            messages.error(request, "得意先コードを入力してください")
+
+    return render(request, "psys/customer_delete_select.html", {
+        "customer_code": customer_code,
+        "customer": customer,
+    })

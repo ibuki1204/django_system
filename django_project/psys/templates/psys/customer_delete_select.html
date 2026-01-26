@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>得意先削除（検索）</title></head>
+<body>
+<h1>得意先削除（検索）</h1>
+
+{% for message in messages %}
+  <p style="color:red">{{ message }}</p>
+{% endfor %}
+
+<form method="post">
+  {% csrf_token %}
+  <label>得意先コード：
+    <input type="text" name="customer_code" value="{{ customer_code }}" maxlength="6">
+  </label>
+  <button type="submit">検索</button>
+</form>
+
+<p>
+  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+</body>
+</html>

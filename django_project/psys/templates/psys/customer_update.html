@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先更新</title>
-</head>
+<head><meta charset="UTF-8"><title>得意先更新</title></head>
 <body>
-  <h1>得意先更新</h1>
 
-  {% for message in messages %}
-    <p style="color:red">{{ message }}</p>
-  {% endfor %}
+<h1>得意先更新</h1>
 
-  <form method="post">
-    {% csrf_token %}
+{% for message in messages %}
+  <p style="color:red">{{ message }}</p>
+{% endfor %}
 
-    <p>得意先コード：{{ customer.customer_code }}</p>
-    <p>得意先名：{{ form.customer_name }}</p>
-    <p>電話番号：{{ form.customer_telno }}</p>
-    <p>郵便番号：{{ form.customer_postalcode }}</p>
-    <p>住所：{{ form.customer_address }}</p>
-    <p>割引率：{{ form.discount_rate }}</p>
+<form method="post">
+  {% csrf_token %}
 
-    <button type="submit">更新</button>
-  </form>
+  <table border="1">
+    <tr>
+      <th>得意先コード</th>
+      <td>{{ customer.customer_code }}</td>
+    </tr>
+    <tr>
+      <th>得意先名</th>
+      <td>{{ form.customer_name }}</td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td>{{ form.customer_telno }}</td>
+    </tr>
+    <tr>
+      <th>郵便番号</th>
+      <td>{{ form.customer_postalcode }}</td>
+    </tr>
+    <tr>
+      <th>住所</th>
+      <td>{{ form.customer_address }}</td>
+    </tr>
+    <tr>
+      <th>割引率</th>
+      <td>{{ form.discount_rate }}</td>
+    </tr>
+  </table>
 
-  <p>
-    <a href="/customer/list/">一覧へ戻る</a> /
-    <a href="/">トップへ</a>
-  </p>
+  <button type="submit">更新する</button>
+  <a href="{% url 'customer_update_select' %}">キャンセル</a>
+</form>
+
 </body>
 </html>
