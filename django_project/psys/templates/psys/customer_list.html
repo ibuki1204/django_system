@@ -5,6 +5,7 @@
   <title>得意先一覧</title>
 </head>
 <body>
+
 <h1>得意先一覧</h1>
 
 {% for message in messages %}
@@ -28,19 +29,18 @@
     <td>{{ c.customer_postalcode }}</td>
     <td>{{ c.customer_address }}</td>
     <td>
-      <a href="/customer/update/{{ c.customer_code }}/">更新</a> /
-      <a href="/customer/delete/{{ c.customer_code }}/" onclick="return confirm('本当に削除しますか？')">削除</a>
+      <a href="{% url 'customer_update' c.customer_code %}">更新</a> /
+      <a href="{% url 'customer_delete' c.customer_code %}">削除</a>
     </td>
   </tr>
   {% endfor %}
 </table>
 
-
 <p>
-  <a href="/customer/search/">得意先検索へ</a> /
-  <a href="/">トップへ</a>
+  <a href="{% url 'customer_search' %}">得意先検索へ</a> /
+  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
   <a href="{% url 'logout' %}">ログアウト</a>
-
 </p>
 
 </body>

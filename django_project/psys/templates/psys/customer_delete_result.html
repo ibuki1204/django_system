@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>得意先削除結果</title></head>
+<body>
+  <h1>得意先削除結果</h1>
+  <p>削除しました。（コード：{{ customer_code }}）</p>
+
+  <p>
+    <a href="{% url 'customer_list' %}">一覧へ</a> /
+    <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a>
+  </p>
+</body>
+</html>

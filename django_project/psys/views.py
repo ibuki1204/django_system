@@ -1,11 +1,17 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Customer
 from .forms import CustomerForm, CustomerUpdateForm
-from django.contrib.auth.decorators import login_required
 
 
+@login_required
+def main_menu(request):
+    return render(request, "psys/main_menu.html")
 
+@login_required
+def customer_management_menu(request):
+    return render(request, "psys/customer_management_menu.html")
 
 def index(request):
     return render(request, "psys/index.html")
@@ -55,16 +61,14 @@ def customer_regist(request):
 # ★ ここから customer_id → customer_code に変更
 @login_required
 def customer_update(request, customer_code):
-    customer = Customer.objects.get(customer_code=customer_code)
+    customer = get_object_or_404(Customer, customer_code=customer_code)
 
     if request.method == "POST":
         form = CustomerUpdateForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
-            messages.success(request, "得意先を更新しました")
-            return redirect("customer_list")  # 追加：更新後は一覧へ戻すのが自然
-        else:
-            messages.error(request, "入力に誤りがあります")
+            return redirect("customer_update_result", customer_code=customer.customer_code)
+        messages.error(request, "入力に誤りがあります")
     else:
         form = CustomerUpdateForm(instance=customer)
 
@@ -73,11 +77,27 @@ def customer_update(request, customer_code):
         "customer": customer,
     })
 
+
+@login_required
+def customer_update_result(request, customer_code):
+    customer = get_object_or_404(Customer, customer_code=customer_code)
+    return render(request, "psys/customer_update_result.html", {"customer": customer})
+
+
 @login_required
 def customer_delete(request, customer_code):
-    customer = Customer.objects.get(customer_code=customer_code)
-    customer.delete_flag = 1
-    customer.save()
-    messages.success(request, "得意先を削除しました")
-    return redirect("customer_list")
+    customer = get_object_or_404(Customer, customer_code=customer_code)
+
+    if request.method == "POST":
+        customer.delete_flag = 1
+        customer.save()
+        return redirect("customer_delete_result", customer_code=customer_code)
+
+    # GETは確認画面
+    return render(request, "psys/customer_delete.html", {"customer": customer})
+
+
+@login_required
+def customer_delete_result(request, customer_code):
+    return render(request, "psys/customer_delete_result.html", {"customer_code": customer_code})
 

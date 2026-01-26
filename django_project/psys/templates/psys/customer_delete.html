@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>得意先削除確認</title></head>
+<body>
+  <h1>得意先削除確認</h1>
+  <p>この得意先を削除（論理削除）します。よろしいですか？</p>
+
+  <p>コード：{{ customer.customer_code }}</p>
+  <p>得意先名：{{ customer.customer_name }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">削除する</button>
+    <a href="{% url 'customer_list' %}">キャンセル</a>
+  </form>
+</body>
+</html>

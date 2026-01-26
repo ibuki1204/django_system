@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>得意先管理メニュー</title>
+</head>
+<body>
+
+<h1>得意先管理メニュー</h1>
+
+<ul>
+  <li><a href="{% url 'customer_list' %}">得意先一覧</a></li>
+  <li><a href="{% url 'customer_regist' %}">得意先登録</a></li>
+  <li><a href="{% url 'customer_search' %}">得意先検索</a></li>
+</ul>
+
+<p>
+  <a href="{% url 'main_menu' %}">管理メニューへ戻る</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+
+</body>
+</html>
