@@ -13,24 +13,28 @@
 
 <table border="1">
   <tr>
-    <th>ID</th>
+    <th>コード</th>
     <th>得意先名</th>
-    <th>Email</th>
+    <th>電話</th>
+    <th>郵便番号</th>
+    <th>住所</th>
     <th>操作</th>
   </tr>
   {% for c in customers %}
   <tr>
-    <td>{{ c.customer_id }}</td>
+    <td>{{ c.customer_code }}</td>
     <td>{{ c.customer_name }}</td>
-    <td>{{ c.email }}</td>
+    <td>{{ c.customer_telno }}</td>
+    <td>{{ c.customer_postalcode }}</td>
+    <td>{{ c.customer_address }}</td>
     <td>
-      <a href="/customer/update/{{ c.customer_id }}/">更新</a> /
-      <a href="/customer/delete/{{ c.customer_id }}/" onclick="return confirm('本当に削除しますか？')">削除</a>
+      <a href="/customer/update/{{ c.customer_code }}/">更新</a> /
+      <a href="/customer/delete/{{ c.customer_code }}/" onclick="return confirm('本当に削除しますか？')">削除</a>
     </td>
-
   </tr>
   {% endfor %}
 </table>
+
 
 <p>
   <a href="/customer/search/">得意先検索へ</a> /
