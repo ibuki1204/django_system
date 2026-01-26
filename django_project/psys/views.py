@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib import messages
 from .models import Customer
 from .forms import CustomerForm
+from django.shortcuts import redirect
+
 
 
 def customer_search(request):
@@ -44,3 +46,29 @@ def customer_regist(request):
         form = CustomerForm()
 
     return render(request, "psys/customer_regist.html", {"form": form})
+
+def customer_update(request, customer_id):
+    customer = Customer.objects.get(customer_id=customer_id)
+
+    if request.method == "POST":
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "得意先を更新しました")
+        else:
+            messages.error(request, "入力に誤りがあります")
+    else:
+        form = CustomerForm(instance=customer)
+
+    return render(request, "psys/customer_update.html", {
+        "form": form,
+        "customer": customer,
+    })
+
+def customer_delete(request, customer_id):
+    customer = Customer.objects.get(customer_id=customer_id)
+    customer.delete()
+    messages.success(request, "得意先を削除しました")
+    return redirect("customer_list")
+
+

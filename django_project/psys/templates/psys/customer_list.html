@@ -16,12 +16,18 @@
     <th>ID</th>
     <th>得意先名</th>
     <th>Email</th>
+    <th>操作</th>
   </tr>
   {% for c in customers %}
   <tr>
     <td>{{ c.customer_id }}</td>
     <td>{{ c.customer_name }}</td>
     <td>{{ c.email }}</td>
+    <td>
+      <a href="/customer/update/{{ c.customer_id }}/">更新</a> /
+      <a href="/customer/delete/{{ c.customer_id }}/" onclick="return confirm('本当に削除しますか？')">削除</a>
+    </td>
+
   </tr>
   {% endfor %}
 </table>
