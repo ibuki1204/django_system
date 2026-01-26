@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Customer
 from .forms import CustomerForm, CustomerUpdateForm
+from django.contrib.auth.decorators import login_required
+
 
 
 
 def index(request):
     return render(request, "psys/index.html")
 
-
+@login_required
 def customer_search(request):
     keyword = request.GET.get("keyword", "")
 
@@ -25,7 +27,7 @@ def customer_search(request):
         "keyword": keyword
     })
 
-
+@login_required
 def customer_list(request):
     customers = Customer.objects.all()
     if not customers.exists():
@@ -34,7 +36,7 @@ def customer_list(request):
         "customers": customers
     })
 
-
+@login_required
 def customer_regist(request):
     if request.method == "POST":
         form = CustomerForm(request.POST)
@@ -51,6 +53,7 @@ def customer_regist(request):
 
 
 # ★ ここから customer_id → customer_code に変更
+@login_required
 def customer_update(request, customer_code):
     customer = Customer.objects.get(customer_code=customer_code)
 
@@ -70,7 +73,7 @@ def customer_update(request, customer_code):
         "customer": customer,
     })
 
-
+@login_required
 def customer_delete(request, customer_code):
     customer = Customer.objects.get(customer_code=customer_code)
     customer.delete_flag = 1

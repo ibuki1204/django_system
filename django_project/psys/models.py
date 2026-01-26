@@ -20,3 +20,13 @@ class Customer(models.Model):
     class Meta:
         managed = False
         db_table = 'customer'
+
+class Employee(models.Model):
+    employee_no = models.CharField(primary_key=True, max_length=6)
+    employee_name = models.CharField(max_length=32, blank=True, null=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'employee'
+
