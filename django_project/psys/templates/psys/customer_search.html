@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>得意先検索</title>
+</head>
+<body>
+<h1>得意先検索</h1>
+
+<form method="get">
+  <input type="text" name="keyword" placeholder="得意先名" value="{{ keyword }}">
+  <button type="submit">検索</button>
+</form>
+
+{% for message in messages %}
+  <p style="color:red">{{ message }}</p>
+{% endfor %}
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>名前</th>
+    <th>Email</th>
+  </tr>
+  {% for c in customers %}
+  <tr>
+    <td>{{ c.customer_id }}</td>
+    <td>{{ c.customer_name }}</td>
+    <td>{{ c.email }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="/">トップへ戻る</a>
+</body>
+</html>
