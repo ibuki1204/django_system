@@ -5,10 +5,11 @@
   <title>得意先検索</title>
 </head>
 <body>
+
 <h1>得意先検索</h1>
 
 <form method="get">
-  <input type="text" name="keyword" placeholder="得意先名" value="{{ keyword }}">
+  <input type="text" name="keyword" value="{{ keyword }}" placeholder="得意先名">
   <button type="submit">検索</button>
 </form>
 
@@ -35,7 +36,11 @@
   {% endfor %}
 </table>
 
-<p><a href="/">トップへ戻る</a></p>
+<p>
+  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+
 </body>
 </html>
-

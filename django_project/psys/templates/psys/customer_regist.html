@@ -5,30 +5,31 @@
   <title>得意先登録</title>
 </head>
 <body>
-  <h1>得意先登録</h1>
 
-  {% for message in messages %}
-    <p style="color:red">{{ message }}</p>
-  {% endfor %}
+<h1>得意先登録</h1>
 
-  <form method="post">
-    {% csrf_token %}
+{% for message in messages %}
+  <p style="color:red">{{ message }}</p>
+{% endfor %}
 
-    <p>得意先コード：{{ form.customer_code }}</p>
-    <p>得意先名：{{ form.customer_name }}</p>
-    <p>電話番号：{{ form.customer_telno }}</p>
-    <p>郵便番号：{{ form.customer_postalcode }}</p>
-    <p>住所：{{ form.customer_address }}</p>
-    <p>割引率：{{ form.discount_rate }}</p>
-    <p>削除フラグ：{{ form.delete_flag }}</p>
+<form method="post">
+  {% csrf_token %}
+  <p>得意先コード：{{ form.customer_code }}</p>
+  <p>得意先名：{{ form.customer_name }}</p>
+  <p>電話番号：{{ form.customer_telno }}</p>
+  <p>郵便番号：{{ form.customer_postalcode }}</p>
+  <p>住所：{{ form.customer_address }}</p>
+  <p>割引率：{{ form.discount_rate }}</p>
+  <p>削除フラグ：{{ form.delete_flag }}</p>
 
-    <button type="submit">登録</button>
-  </form>
+  <button type="submit">登録</button>
+</form>
 
-  <p>
-    <a href="/customer/list/">一覧へ</a> /
-    <a href="/customer/search/">検索へ</a> /
-    <a href="/">トップへ</a>
-  </p>
+<p>
+  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
+  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
+  <a href="{% url 'logout' %}">ログアウト</a>
+</p>
+
 </body>
 </html>
