@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Customer
+from .forms import CustomerForm
+
 
 def customer_search(request):
     keyword = request.GET.get("keyword", "")
@@ -28,3 +30,17 @@ def customer_list(request):
     return render(request, "psys/customer_list.html", {
         "customers": customers
     })
+
+def customer_regist(request):
+    if request.method == "POST":
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "得意先を登録しました")
+            form = CustomerForm()  # 入力欄を空にする
+        else:
+            messages.error(request, "入力に誤りがあります")
+    else:
+        form = CustomerForm()
+
+    return render(request, "psys/customer_regist.html", {"form": form})

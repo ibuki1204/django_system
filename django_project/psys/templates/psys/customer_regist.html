@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>得意先登録</title>
+</head>
+<body>
+  <h1>得意先登録</h1>
+
+  {% for message in messages %}
+    <p style="color:red">{{ message }}</p>
+  {% endfor %}
+
+  <form method="post">
+    {% csrf_token %}
+    <p>得意先名：{{ form.customer_name }}</p>
+    <p>Email：{{ form.email }}</p>
+    <button type="submit">登録</button>
+  </form>
+
+  <p>
+    <a href="/customer/list/">一覧へ</a> /
+    <a href="/customer/search/">検索へ</a> /
+    <a href="/">トップへ</a>
+  </p>
+</body>
+</html>
