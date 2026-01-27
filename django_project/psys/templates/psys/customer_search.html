@@ -1,46 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先検索</title>
-</head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>得意先検索</h1>
+{% block title %}得意先検索{% endblock %}
+{% block page_title %}得意先検索{% endblock %}
 
-<form method="get">
-  <input type="text" name="keyword" value="{{ keyword }}" placeholder="得意先名">
-  <button type="submit">検索</button>
+{% block content %}
+
+<!-- 検索フォーム -->
+<form method="get" style="text-align:center; margin-bottom:12px;">
+  <input type="text"
+         name="customer_code"
+         value="{{ customer_code }}"
+         placeholder="得意先コード"
+         maxlength="6"
+         style="width:200px; height:22px; font-size:12px;">
+  <button type="submit" name="search" style="height:26px;">検索</button>
 </form>
 
-{% for message in messages %}
-  <p style="color:red">{{ message }}</p>
-{% endfor %}
+{# 検索結果があるときだけ表示（仕様書は1件想定） #}
+{% if customers and customers|length > 0 %}
+  {% with c=customers.0 %}
+    <table class="form-table">
+      <tr>
+        <td class="label">得意先コード</td>
+        <td>{{ c.customer_code }}</td>
+      </tr>
+      <tr>
+        <td class="label">得意先名</td>
+        <td>{{ c.customer_name }}</td>
+      </tr>
+      <tr>
+        <td class="label">電話番号</td>
+        <td>{{ c.customer_telno }}</td>
+      </tr>
+      <tr>
+        <td class="label">郵便番号</td>
+        <td>{{ c.customer_postalcode }}</td>
+      </tr>
+      <tr>
+        <td class="label">住所</td>
+        <td>{{ c.customer_address }}</td>
+      </tr>
+      <tr>
+        <td class="label">割引率</td>
+        <td>{{ c.discount_rate }}</td>
+      </tr>
+    </table>
 
-<table border="1">
-  <tr>
-    <th>コード</th>
-    <th>名前</th>
-    <th>電話</th>
-    <th>郵便番号</th>
-    <th>住所</th>
-  </tr>
-  {% for c in customers %}
-  <tr>
-    <td>{{ c.customer_code }}</td>
-    <td>{{ c.customer_name }}</td>
-    <td>{{ c.customer_telno }}</td>
-    <td>{{ c.customer_postalcode }}</td>
-    <td>{{ c.customer_address }}</td>
-  </tr>
-  {% endfor %}
-</table>
+    {# 仕様書が「検索→選択→処理」ならここにボタンを置いてもOK #}
+    <div class="btn-area">
+      <a href="{% url 'customer_update' c.customer_code %}">
+        <button type="button">更新</button>
+      </a>
+      <a href="{% url 'customer_delete' c.customer_code %}">
+        <button type="button">削除</button>
+      </a>
+    </div>
+  {% endwith %}
+{% endif %}
 
-<p>
-  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-
-</body>
-</html>
+{% endblock %}

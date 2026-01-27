@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}管理システム{% endblock %}</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #fff;
+    }
+
+    /* 上の帯 */
+    .header {
+      background: #00e5ff;
+      padding: 12px 0;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px solid #999;
+    }
+
+    /* 全体レイアウト */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    /* 左メニュー（枠なし） */
+    .side .btn {
+      display: block;
+      width: 180px;
+      margin: 10px 0;
+      padding: 6px 0;
+      font-size: 12px;
+    }
+
+    /* 画面タイトル */
+    .page-title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 6px 0 12px;
+    }
+
+    /* messages */
+    .msg {
+      text-align: center;
+      color: red;
+      font-size: 12px;
+      margin: 8px 0;
+    }
+
+    /* 一覧テーブル（共通） */
+    table.list-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+    table.list-table th,
+    table.list-table td {
+      border: 1px solid #999;
+      padding: 6px 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    table.list-table th {
+      background: #f3f3f3;
+      text-align: center;
+    }
+
+    /* フォーム表（共通：登録/更新/削除確認で使える） */
+    table.form-table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      font-size: 12px;
+    }
+    table.form-table td {
+      border: 1px solid #999;
+      padding: 6px 10px;
+      vertical-align: middle;
+    }
+    table.form-table td.label {
+      background: #f3f3f3;
+      width: 120px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    table.form-table input,
+    table.form-table select,
+    table.form-table textarea {
+      width: 240px;
+      height: 22px;
+      box-sizing: border-box;
+      font-size: 12px;
+    }
+
+    .btn-area { text-align: center; margin-top: 12px; }
+    .btn-area button { width: 90px; padding: 4px 0; font-size: 12px; }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  <div class="header">管理システム</div>
+
+  <div class="layout">
+    <!-- 左メニュー（デフォルト） -->
+    <div class="side">
+      {% block side_menu %}
+        <a href="{% url 'customer_management_menu' %}">
+          <button type="button" class="btn">得意先管理メニュー</button>
+        </a>
+
+        <a href="{% url 'logout' %}">
+          <button type="button" class="btn">ログアウト</button>
+        </a>
+      {% endblock %}
+    </div>
+
+    <!-- 右メイン -->
+    <div class="main">
+      <div class="page-title">{% block page_title %}{% endblock %}</div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p class="msg">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -23,19 +23,19 @@ def index(request):
 
 @login_required
 def customer_search(request):
-    keyword = request.GET.get("keyword", "")
+    customer_code = request.GET.get("customer_code", "").strip()
 
-    if keyword:
-        customers = Customer.objects.filter(delete_flag=0, customer_name__contains=keyword)
+    if customer_code:
+        customers = Customer.objects.filter(delete_flag=0, customer_code=customer_code)
+
+        if not customers.exists():
+            messages.error(request, "該当する得意先がありません")
     else:
-        customers = Customer.objects.filter(delete_flag=0)
-
-    if not customers.exists():
-        messages.error(request, "該当する得意先がありません")
+        customers = Customer.objects.none()
 
     return render(request, "psys/customer_search.html", {
         "customers": customers,
-        "keyword": keyword
+        "customer_code": customer_code,
     })
 
 

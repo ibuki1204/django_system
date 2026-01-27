@@ -1,47 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先一覧</title>
-</head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>得意先一覧</h1>
+{% block title %}得意先一覧{% endblock %}
+{% block page_title %}得意先一覧{% endblock %}
 
-{% for message in messages %}
-  <p style="color:red">{{ message }}</p>
-{% endfor %}
-
-<table border="1">
-  <tr>
-    <th>コード</th>
-    <th>得意先名</th>
-    <th>電話</th>
-    <th>郵便番号</th>
-    <th>住所</th>
-    <th>操作</th>
-  </tr>
-  {% for c in customers %}
-  <tr>
-    <td>{{ c.customer_code }}</td>
-    <td>{{ c.customer_name }}</td>
-    <td>{{ c.customer_telno }}</td>
-    <td>{{ c.customer_postalcode }}</td>
-    <td>{{ c.customer_address }}</td>
-    <td>
-      <a href="{% url 'customer_update' c.customer_code %}">更新</a> /
-      <a href="{% url 'customer_delete' c.customer_code %}">削除</a>
-    </td>
-  </tr>
-  {% endfor %}
+{% block content %}
+<table class="list-table">
+  <thead>
+    <tr>
+      <th style="width:120px;">得意先コード</th>
+      <th style="width:120px;">得意先名</th>
+      <th style="width:150px;">電話番号</th>
+      <th style="width:120px;">郵便番号</th>
+      <th style="width:280px;">住所</th>
+      <th style="width:80px;">割引率</th>
+      <th style="width:100px;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in customers %}
+      <tr>
+        <td>{{ c.customer_code }}</td>
+        <td>{{ c.customer_name }}</td>
+        <td>{{ c.customer_telno }}</td>
+        <td>{{ c.customer_postalcode }}</td>
+        <td>{{ c.customer_address }}</td>
+        <td style="text-align:right;">{{ c.discount_rate }}</td>
+        <td style="text-align:center;">
+          <a href="{% url 'customer_update_select' %}">更新</a> /
+          <a href="{% url 'customer_delete_select' %}">削除</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="7" style="text-align:center;">得意先がありません</td></tr>
+    {% endfor %}
+  </tbody>
 </table>
-
-<p>
-  <a href="{% url 'customer_search' %}">得意先検索へ</a> /
-  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-
-</body>
-</html>
+{% endblock %}
