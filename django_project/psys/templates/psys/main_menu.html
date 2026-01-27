@@ -1,106 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>管理メニュー</title>
-  <style>
-    .wrapper { width: 920px; margin: 0 auto; font-family: sans-serif; }
+{% extends "psys/base.html" %}
 
-    /* 上の帯（管理システム） */
-    .header {
-      background: #00e5ff;
-      padding: 10px 0;
-      text-align: center;
-      font-weight: bold;
-      border: 1px solid #999;
-      border-bottom: none;
-    }
+{% block title %}管理メニュー{% endblock %}
+{% block page_title %}管理メニュー{% endblock %}
 
-    /* 枠 */
-    .content {
-      border: 1px solid #999;
-      height: 360px;
-      padding: 15px 20px;
-      box-sizing: border-box;
-      background: #fff;
-    }
+{# 左はログアウトだけ（仕様書通り） #}
+{% block side_menu %}
+  <a href="{% url 'logout' %}">
+    <button type="button" class="btn" style="width:110px;">ログアウト</button>
+  </a>
+{% endblock %}
 
-    /* 画面タイトル（仕様書の「管理メニュー」） */
-    .title {
-      text-align: center;
-      font-size: 12px;
-      font-weight: bold;
-      margin: 5px 0 20px;
-    }
+{% block content %}
 
-    /* 左：ログアウト */
-    .left-menu { float: left; width: 180px; }
-    .left-menu .btn {
-      display: block;
-      width: 110px;
-      margin: 8px 0;
-      padding: 4px 0;
-      font-size: 12px;
-    }
+{# 仕様書は「ようこそ」は無いので、出したいなら残す/不要なら消す #}
+<!--<div style="text-align:center; font-size:12px; margin-bottom:12px;">
+  ようこそ、{{ request.user.first_name|default:request.user.username }} さん
+</div> -->
 
-    /* 中央：メニュー */
-    .main { margin-left: 220px; }
+<div style="text-align:center; margin-top:10px;">
+  <a href="{% url 'customer_management_menu' %}">
+    <button type="button" class="btn" style="width:160px; margin:10px auto; display:block;">
+      得意先管理
+    </button>
+  </a>
 
-    .welcome {
-      text-align: center;
-      margin-bottom: 12px;
-      font-size: 12px;
-    }
+  <a href="{% url 'customer_summary' %}">
+    <button type="button" class="btn" style="width:160px; margin:10px auto; display:block;">
+      得意先別集計
+    </button>
+  </a>
+</div>
 
-    .menu-area {
-      width: 220px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .menu-area .btn {
-      display: block;
-      width: 160px;
-      margin: 10px auto;
-      padding: 6px 0;
-      font-size: 12px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="wrapper">
-    <div class="header">管理システム</div>
-
-    <div class="content">
-      <div class="title">管理メニュー</div>
-
-      <!-- 左：ログアウト（仕様書どおりボタン） -->
-      <div class="left-menu">
-        <a href="{% url 'logout' %}">
-          <button type="button" class="btn">ログアウト</button>
-        </a>
-      </div>
-
-      <!-- 中央：メニュー（仕様書どおりボタン縦並び） -->
-      <div class="main">
-        <div class="welcome">
-          ようこそ、{{ request.user.first_name|default:request.user.username }} さん
-        </div>
-
-        <div class="menu-area">
-          <a href="{% url 'customer_management_menu' %}">
-            <button type="button" class="btn">得意先管理</button>
-          </a>
-
-          <a href="{% url 'customer_summary' %}">
-            <button type="button" class="btn">得意先別集計</button>
-          </a>
-        </div>
-      </div>
-
-      <div style="clear: both;"></div>
-    </div>
-  </div>
-</body>
-</html>
+{% endblock %}

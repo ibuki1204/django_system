@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>得意先更新結果</title></head>
-<body>
-  <h1>得意先更新結果</h1>
-  <p>更新しました。</p>
+{% extends "psys/base.html" %}
 
-  <table border="1">
-    <tr><th>コード</th><td>{{ customer.customer_code }}</td></tr>
-    <tr><th>得意先名</th><td>{{ customer.customer_name }}</td></tr>
-    <tr><th>電話</th><td>{{ customer.customer_telno }}</td></tr>
-    <tr><th>郵便番号</th><td>{{ customer.customer_postalcode }}</td></tr>
-    <tr><th>住所</th><td>{{ customer.customer_address }}</td></tr>
-    <tr><th>割引率</th><td>{{ customer.discount_rate }}</td></tr>
-  </table>
+{% block title %}得意先更新結果{% endblock %}
+{% block page_title %}更新結果{% endblock %}
 
-  <p>
-    <a href="{% url 'customer_list' %}">一覧へ</a> /
-    <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a>
-  </p>
-</body>
-</html>
+{% block content %}
+
+<table class="form-table">
+  <tr><td class="label">得意先コード</td><td>{{ customer.customer_code }}</td></tr>
+  <tr><td class="label">得意先名</td><td>{{ customer.customer_name }}</td></tr>
+  <tr><td class="label">電話番号</td><td>{{ customer.customer_telno }}</td></tr>
+  <tr><td class="label">郵便番号</td><td>{{ customer.customer_postalcode }}</td></tr>
+  <tr><td class="label">住所</td><td>{{ customer.customer_address }}</td></tr>
+  <tr><td class="label">割引率</td><td>{{ customer.discount_rate }}</td></tr>
+</table>
+
+<div class="btn-area">
+  <a href="{% url 'customer_management_menu' %}">
+    <button type="button">戻る</button>
+  </a>
+</div>
+
+{% endblock %}

@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>得意先削除結果</title></head>
-<body>
-  <h1>得意先削除結果</h1>
-  <p>削除しました。（コード：{{ customer_code }}）</p>
+{% extends "psys/base.html" %}
 
-  <p>
-    <a href="{% url 'customer_list' %}">一覧へ</a> /
-    <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a>
-  </p>
-</body>
-</html>
+{% block title %}得意先削除結果{% endblock %}
+{% block page_title %}削除結果{% endblock %}
+
+{% block content %}
+
+<div style="text-align:center; font-size:12px; margin: 12px 0;">
+  （コード：{{ customer_code }}）
+</div>
+
+<div class="btn-area">
+  <a href="{% url 'customer_management_menu' %}">
+    <button type="button">戻る</button>
+  </a>
+</div>
+
+{% endblock %}

@@ -1,122 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先管理メニュー</title>
-  <style>
-    .wrapper { width: 920px; margin: 0 auto; font-family: sans-serif; }
+{% extends "psys/base.html" %}
 
-    /* 上の帯 */
-    .header {
-      background: #00e5ff;
-      padding: 10px 0;
-      text-align: center;
-      font-weight: bold;
-      border: 1px solid #999;
-      border-bottom: none;
-    }
+{% block title %}得意先管理メニュー{% endblock %}
+{% block page_title %}得意先管理メニュー{% endblock %}
 
-    /* 枠 */
-    .content {
-      border: 1px solid #999;
-      height: 360px;
-      padding: 15px 20px;
-      box-sizing: border-box;
-      background: #fff;
-    }
+{# 左：管理メニュー / ログアウト（仕様書どおり） #}
+{% block side_menu %}
+  <a href="{% url 'main_menu' %}">
+    <button type="button" class="btn" style="width:110px;">管理メニュー</button>
+  </a>
 
-    /* タイトル */
-    .title {
-      text-align: center;
-      font-size: 12px;
-      font-weight: bold;
-      margin: 5px 0 20px;
-    }
+  <a href="{% url 'logout' %}">
+    <button type="button" class="btn" style="width:110px;">ログアウト</button>
+  </a>
+{% endblock %}
 
-    /* 左メニュー */
-    .left-menu { float:left; width: 180px; }
-    .left-menu .btn {
-      display:block;
-      width: 110px;
-      margin: 8px 0;
-      padding: 4px 0;
-      font-size: 12px;
-    }
+{% block content %}
 
-    /* 中央 */
-    .main { margin-left: 220px; }
+{# 仕様書に「ようこそ」は無いので削除（残したいならここに追加） #}
 
-    .welcome {
-      text-align: center;
-      margin-bottom: 12px;
-      font-size: 12px;
-    }
+<div style="text-align:center; margin-top:10px;">
+  <a href="{% url 'customer_list' %}">
+    <button type="button" class="btn" style="width:160px; margin:8px auto; display:block;">
+      得意先一覧
+    </button>
+  </a>
 
-    .menu-area {
-      width: 220px;
-      margin: 0 auto;
-      text-align: center;
-    }
+  <a href="{% url 'customer_regist' %}">
+    <button type="button" class="btn" style="width:160px; margin:8px auto; display:block;">
+      得意先登録
+    </button>
+  </a>
 
-    .menu-area .btn {
-      display: block;
-      width: 160px;
-      margin: 8px auto;
-      padding: 6px 0;
-      font-size: 12px;
-    }
-  </style>
-</head>
+  <a href="{% url 'customer_search' %}">
+    <button type="button" class="btn" style="width:160px; margin:8px auto; display:block;">
+      得意先検索
+    </button>
+  </a>
 
-<body>
-  <div class="wrapper">
-    <div class="header">管理システム</div>
+  <a href="{% url 'customer_update_select' %}">
+    <button type="button" class="btn" style="width:160px; margin:8px auto; display:block;">
+      得意先更新
+    </button>
+  </a>
 
-    <div class="content">
-      <div class="title">得意先管理メニュー</div>
+  <a href="{% url 'customer_delete_select' %}">
+    <button type="button" class="btn" style="width:160px; margin:8px auto; display:block;">
+      得意先削除
+    </button>
+  </a>
+</div>
 
-      <!-- 左：管理メニュー / ログアウト -->
-      <div class="left-menu">
-        <a href="{% url 'main_menu' %}">
-          <button type="button" class="btn">管理メニュー</button>
-        </a>
-
-        <a href="{% url 'logout' %}">
-          <button type="button" class="btn">ログアウト</button>
-        </a>
-      </div>
-
-      <!-- 中央：得意先管理 -->
-      <div class="main">
-        <div class="welcome">
-          ようこそ、{{ request.user.first_name|default:request.user.username }} さん
-        </div>
-
-        <div class="menu-area">
-          <a href="{% url 'customer_list' %}">
-            <button type="button" class="btn">得意先一覧</button>
-          </a>
-
-          <a href="{% url 'customer_regist' %}">
-            <button type="button" class="btn">得意先登録</button>
-          </a>
-
-          <a href="{% url 'customer_search' %}">
-            <button type="button" class="btn">得意先検索</button>
-          </a>
-
-          <a href="{% url 'customer_update_select' %}">
-            <button type="button" class="btn">得意先更新</button>
-          </a>
-
-          <a href="{% url 'customer_delete_select' %}">
-            <button type="button" class="btn">得意先削除</button>
-          </a>
-        </div>
-      </div>
-
-      <div style="clear:both;"></div>
-    </div>
-  </div>
-</body>
-</html>
+{% endblock %}

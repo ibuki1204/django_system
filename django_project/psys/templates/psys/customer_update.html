@@ -1,47 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>得意先更新</title></head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>得意先更新</h1>
+{% block title %}得意先更新{% endblock %}
+{% block page_title %}更新検索{% endblock %}
 
-{% for message in messages %}
-  <p style="color:red">{{ message }}</p>
-{% endfor %}
+{% block content %}
+
+<!-- 仕様書寄せ：上に「更新検索」（今の設計では select 画面に投げる） -->
+<form method="post" action="{% url 'customer_update_select' %}"
+      style="text-align:center; margin-bottom:12px;">
+  {% csrf_token %}
+  <span style="font-size:12px; margin-right:6px;">得意先コード：</span>
+  <input type="text"
+         name="customer_code"
+         value="{{ customer.customer_code }}"
+         maxlength="6"
+         style="width:200px; height:22px; font-size:12px;">
+  <button type="submit" name="search" style="height:26px; margin-left:6px;">検索</button>
+</form>
+
+<!-- 見出し（仕様書：得意先更新） -->
+<div style="text-align:center; font-size:12px; font-weight:bold; margin: 6px 0 10px;">
+  得意先更新
+</div>
 
 <form method="post">
   {% csrf_token %}
 
-  <table border="1">
+  <table class="form-table">
     <tr>
-      <th>得意先コード</th>
+      <td class="label">得意先コード</td>
       <td>{{ customer.customer_code }}</td>
     </tr>
     <tr>
-      <th>得意先名</th>
+      <td class="label">得意先名</td>
       <td>{{ form.customer_name }}</td>
     </tr>
     <tr>
-      <th>電話番号</th>
+      <td class="label">電話番号</td>
       <td>{{ form.customer_telno }}</td>
     </tr>
     <tr>
-      <th>郵便番号</th>
+      <td class="label">郵便番号</td>
       <td>{{ form.customer_postalcode }}</td>
     </tr>
     <tr>
-      <th>住所</th>
+      <td class="label">住所</td>
       <td>{{ form.customer_address }}</td>
     </tr>
     <tr>
-      <th>割引率</th>
+      <td class="label">割引率</td>
       <td>{{ form.discount_rate }}</td>
     </tr>
   </table>
 
-  <button type="submit">更新する</button>
-  <a href="{% url 'customer_update_select' %}">キャンセル</a>
+  <!-- 更新/キャンセル：同じUIに統一（JS使わず安全） -->
+  <div class="btn-area">
+    <button type="submit" name="update">更新</button>
+
+    <a href="{% url 'customer_update_select' %}" style="margin-left:10px;">
+      <button type="button">キャンセル</button>
+    </a>
+  </div>
 </form>
 
-</body>
-</html>
+{% endblock %}

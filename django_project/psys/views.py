@@ -91,7 +91,9 @@ def customer_update(request, customer_code):
 @login_required
 def customer_update_result(request, customer_code):
     customer = get_object_or_404(Customer, customer_code=customer_code)
+    messages.success(request, "更新が完了しました。")
     return render(request, "psys/customer_update_result.html", {"customer": customer})
+
 
 
 @login_required
@@ -118,6 +120,7 @@ def customer_delete(request, customer_code):
 
 @login_required
 def customer_delete_result(request, customer_code):
+    messages.success(request, "削除しました。")
     return render(request, "psys/customer_delete_result.html", {"customer_code": customer_code})
 
 @login_required
