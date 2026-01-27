@@ -5,6 +5,10 @@ from .models import Customer, Orders, OrderDetails
 from .forms import CustomerForm, CustomerUpdateForm
 from django.db.models import Sum, Count
 from .models import Employee
+from django.contrib.auth.models import User
+from django.db import transaction
+
+
 
 @login_required
 def main_menu(request):
@@ -232,3 +236,58 @@ def customer_delete_select(request):
         "customer_code": customer_code,
         "customer": customer,
     })
+
+
+def signup(request):
+    if request.method == "POST":
+        employee_no = request.POST.get("employee_no", "").strip()
+        employee_name = request.POST.get("employee_name", "").strip()
+        password1 = request.POST.get("password1", "")
+        password2 = request.POST.get("password2", "")
+
+        # 入力チェック
+        if not employee_no or not employee_name or not password1 or not password2:
+            messages.error(request, "未入力の項目があります。")
+            return render(request, "psys/signup.html")
+
+        if len(employee_no) != 6:
+            messages.error(request, "従業員番号は6桁で入力してください。")
+            return render(request, "psys/signup.html")
+
+        if password1 != password2:
+            messages.error(request, "パスワードが一致しません。")
+            return render(request, "psys/signup.html")
+
+        if User.objects.filter(username=employee_no).exists():
+            messages.error(request, "この従業員番号は既に登録されています。")
+            return render(request, "psys/signup.html")
+
+        if Employee.objects.filter(employee_no=employee_no).exists():
+            messages.error(request, "employeeテーブルに同じ従業員番号が既に存在します。")
+            return render(request, "psys/signup.html")
+
+        # 👇 正しい try-except + transaction.atomic の構造
+        try:
+            with transaction.atomic():
+                # User作成
+                User.objects.create_user(
+                    username=employee_no,
+                    password=password1,
+                    first_name=employee_name,
+                )
+
+                # Employee作成
+                emp = Employee(
+                    employee_no=employee_no,
+                    employee_name=employee_name,
+                )
+                emp.save()
+
+        except Exception as e:
+            messages.error(request, f"登録に失敗しました：{e}")
+            return render(request, "psys/signup.html")
+
+        messages.success(request, "新規登録が完了しました。ログインしてください。")
+        return redirect("login")
+
+    return render(request, "psys/signup.html")

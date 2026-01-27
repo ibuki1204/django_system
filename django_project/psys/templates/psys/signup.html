@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>新規登録</title>
+</head>
+<body>
+  <h1>新規登録</h1>
+
+  <a href="{% url 'index' %}">
+    <button type="button">top</button>
+  </a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <p>従業員番号：<input type="text" name="employee_no" maxlength="6"></p>
+    <p>従業員名：<input type="text" name="employee_name" maxlength="50"></p>
+    <p>パスワード：<input type="password" name="password1" maxlength="255"></p>
+    <p>パスワード（確認）：<input type="password" name="password2" maxlength="255"></p>
+    <button type="submit">登録</button>
+  </form>
+</body>
+</html>

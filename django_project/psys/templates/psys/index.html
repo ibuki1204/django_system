@@ -2,12 +2,67 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>トップ画面</title>
-</head>
-<body>
-  <h1>はじめての Django 🎉</h1>
-  <p>画面表示できました！</p>
-  <a href="/customer/regist/">得意先登録へ</a>
+  <title>トップページ</title>
+  <style>
+    .wrapper { width: 920px; margin: 0 auto; font-family: sans-serif; }
 
+    /* 上の帯 */
+    .header {
+      background: #00e5ff;
+      text-align: center;
+      font-weight: bold;
+      padding: 10px 0;
+      border: 1px solid #999;
+      border-bottom: none;
+    }
+
+    /* 画面枠 */
+    .content {
+      border: 1px solid #999;
+      height: 360px;
+      padding: 15px 20px;
+      box-sizing: border-box;
+    }
+
+    /* タイトル */
+    .title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 5px 0 20px;
+    }
+
+    /* 左ボタン */
+    .left-menu {
+      width: 180px;
+    }
+    .left-menu .btn {
+      display: block;
+      width: 110px;     /* 仕様書の小さめボタン感 */
+      margin: 8px 0;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="header">管理システム</div>
+
+    <div class="content">
+      <div class="title">トップページ</div>
+
+      <div class="left-menu">
+        <a href="{% url 'login' %}">
+          <button type="button" class="btn">ログイン</button>
+        </a>
+
+        <a href="{% url 'signup' %}">
+          <button type="button" class="btn">新規登録</button>
+        </a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
