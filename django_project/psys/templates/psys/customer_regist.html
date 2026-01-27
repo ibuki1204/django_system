@@ -1,144 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先登録</title>
-  <style>
-    /* 全体枠 */
-    .wrapper { width: 920px; margin: 0 auto; }
+{% extends "psys/base.html" %}
 
-    /* 上部の帯（仕様書の「管理システム」） */
-    .header {
-      background: #00e5ff;
-      padding: 10px;
-      text-align: center;
-      font-weight: bold;
-    }
+{% block title %}得意先登録{% endblock %}
+{% block page_title %}得意先登録{% endblock %}
 
-    /* 画面の枠（仕様書の大きい枠） */
-    .content {
-      border: 1px solid #999;
-      height: 430px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+{# 左メニューは「得意先管理メニュー / ログアウト」でOKなので上書き不要 #}
 
-    /* 左ボタンエリア */
-    .left-menu {
-      float: left;
-      width: 180px;
-    }
-    .left-menu .btn {
-      display: block;
-      width: 160px;
-      margin: 10px 0;
-      padding: 6px 0;
-    }
+{% block content %}
+<form method="post">
+  {% csrf_token %}
 
-    /* 中央エリア */
-    .main {
-      margin-left: 220px;
-    }
+  <table class="form-table">
+    <tr>
+      <td class="label">得意先コード</td>
+      <td>{{ form.customer_code }}</td>
+    </tr>
+    <tr>
+      <td class="label">得意先名</td>
+      <td>{{ form.customer_name }}</td>
+    </tr>
+    <tr>
+      <td class="label">電話番号</td>
+      <td>{{ form.customer_telno }}</td>
+    </tr>
+    <tr>
+      <td class="label">郵便番号</td>
+      <td>{{ form.customer_postalcode }}</td>
+    </tr>
+    <tr>
+      <td class="label">住所</td>
+      <td>{{ form.customer_address }}</td>
+    </tr>
+    <tr>
+      <td class="label">割引率</td>
+      <td>{{ form.discount_rate }}</td>
+    </tr>
+  </table>
 
-    /* 入力表 */
-    table.form-table {
-      border-collapse: collapse;
-      margin: 0 auto;
-    }
-    table.form-table td {
-      border: 1px solid #999;
-      padding: 6px 10px;
-      vertical-align: middle;
-    }
-    table.form-table td.label {
-      background: #f3f3f3;
-      width: 120px;
-    }
-    table.form-table input,
-    table.form-table select,
-    table.form-table textarea {
-      width: 260px;
-      box-sizing: border-box;
-    }
+  <div class="btn-area">
+  <button type="submit" name="regist">登録</button>
 
-    /* 登録ボタン */
-    .btn-area {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    /* メッセージ */
-    .msg {
-      text-align: center;
-      color: red;
-      margin: 8px 0;
-    }
-  </style>
-</head>
-<body>
-
-<div class="wrapper">
-  <div class="header">管理システム</div>
-
-  <div class="content">
-    <!-- 左：ボタン（仕様書：得意先管理メニュー / ログアウト） -->
-    <div class="left-menu">
-      <a href="{% url 'customer_management_menu' %}">
-        <button type="button" class="btn">得意先管理メニュー</button>
-      </a>
-
-      <a href="{% url 'logout' %}">
-        <button type="button" class="btn">ログアウト</button>
-      </a>
-    </div>
-
-    <!-- 中央：登録フォーム -->
-    <div class="main">
-      <h3 style="text-align:center;">得意先登録</h3>
-
-      {% for message in messages %}
-        <p class="msg">{{ message }}</p>
-      {% endfor %}
-
-      <form method="post">
-        {% csrf_token %}
-
-        <table class="form-table">
-          <tr>
-            <td class="label">得意先コード</td>
-            <td>{{ form.customer_code }}</td>
-          </tr>
-          <tr>
-            <td class="label">得意先名</td>
-            <td>{{ form.customer_name }}</td>
-          </tr>
-          <tr>
-            <td class="label">電話番号</td>
-            <td>{{ form.customer_telno }}</td>
-          </tr>
-          <tr>
-            <td class="label">郵便番号</td>
-            <td>{{ form.customer_postalcode }}</td>
-          </tr>
-          <tr>
-            <td class="label">住所</td>
-            <td>{{ form.customer_address }}</td>
-          </tr>
-          <tr>
-            <td class="label">割引率</td>
-            <td>{{ form.discount_rate }}</td>
-          </tr>
-        </table>
-
-        <div class="btn-area">
-          <button type="submit" name="regist">登録</button>
-        </div>
-      </form>
-    </div>
-
-    <div style="clear:both;"></div>
-  </div>
+  <a href="{% url 'customer_management_menu' %}">
+    <button type="button">戻る</button>
+  </a>
 </div>
 
-</body>
-</html>
+</form>
+{% endblock %}

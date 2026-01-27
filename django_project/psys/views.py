@@ -57,8 +57,8 @@ def customer_regist(request):
             customer = form.save(commit=False)
             customer.delete_flag = 0
             customer.save()
-            messages.success(request, "得意先を登録しました")
-            return redirect("customer_list")
+            messages.success(request, "登録が完了しました。")
+            return redirect("customer_regist")
         else:
             messages.error(request, "入力に誤りがあります")
     else:

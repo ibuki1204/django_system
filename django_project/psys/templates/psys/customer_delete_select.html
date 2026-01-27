@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>得意先削除（検索）</title></head>
-<body>
-<h1>得意先削除（検索）</h1>
+{% extends "psys/base.html" %}
 
-{% for message in messages %}
-  <p style="color:red">{{ message }}</p>
-{% endfor %}
+{% block title %}得意先削除（検索）{% endblock %}
+{% block page_title %}削除検索{% endblock %}
 
-<form method="post">
+{% block content %}
+
+<form method="post" style="text-align:center; margin-bottom:12px;">
   {% csrf_token %}
-  <label>得意先コード：
-    <input type="text" name="customer_code" value="{{ customer_code }}" maxlength="6">
-  </label>
-  <button type="submit">検索</button>
+
+  <span style="font-size:12px; margin-right:6px;">得意先コード：</span>
+  <input type="text"
+         name="customer_code"
+         value="{{ customer_code }}"
+         maxlength="6"
+         style="width:200px; height:22px; font-size:12px;">
+
+  <button type="submit" name="search" style="height:26px; margin-left:6px;">検索</button>
 </form>
 
-<p>
-  <a href="{% url 'customer_management_menu' %}">得意先管理メニューへ</a> /
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-</body>
-</html>
+{% endblock %}

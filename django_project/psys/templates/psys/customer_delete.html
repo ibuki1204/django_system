@@ -1,29 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>得意先削除確認</title></head>
-<body>
-  <h1>得意先削除確認</h1>
+{% extends "psys/base.html" %}
+
+{% block title %}得意先削除{% endblock %}
+{% block page_title %}削除検索{% endblock %}
+
+{% block content %}
+
+<!-- 仕様書どおり：上に検索フォーム（得意先コード＋検索） -->
+<form method="post" action="{% url 'customer_delete_select' %}"
+      style="text-align:center; margin-bottom:12px;">
+  {% csrf_token %}
+  <span style="font-size:12px; margin-right:6px;">得意先コード：</span>
+  <input type="text"
+         name="customer_code"
+         value="{{ customer.customer_code }}"
+         maxlength="6"
+         style="width:200px; height:22px; font-size:12px;">
+  <button type="submit" name="search" style="height:26px; margin-left:6px;">検索</button>
+</form>
+
+<!-- タイトル（仕様書：削除確認） -->
+<div style="text-align:center; font-size:12px; font-weight:bold; margin: 6px 0 10px;">
+  削除確認
+</div>
+
+<!-- 削除対象の詳細 -->
+<table class="form-table">
+  <tr><td class="label">得意先コード</td><td>{{ customer.customer_code }}</td></tr>
+  <tr><td class="label">得意先名</td><td>{{ customer.customer_name }}</td></tr>
+  <tr><td class="label">電話番号</td><td>{{ customer.customer_telno }}</td></tr>
+  <tr><td class="label">郵便番号</td><td>{{ customer.customer_postalcode }}</td></tr>
+  <tr><td class="label">住所</td><td>{{ customer.customer_address }}</td></tr>
+  <tr><td class="label">割引率</td><td>{{ customer.discount_rate }}</td></tr>
+
+  {% if employee %}
+  <tr><td class="label">操作者</td><td>{{ employee.employee_no }}　{{ employee.employee_name }}</td></tr>
+  {% endif %}
+</table>
+
+<!-- 削除 / キャンセル -->
+<form method="post" style="text-align:center; margin-top:12px;">
+  {% csrf_token %}
+
+  <button type="submit"
+          name="delete"
+          style="width:90px; padding:4px 0; font-size:12px;">
+    削除
+  </button>
+
+  <a href="{% url 'customer_delete_select' %}">
+  <button type="button"
+          style="width:90px; padding:4px 0; font-size:12px; margin-left:10px;">
+    キャンセル
+  </button>
+</a>
+
+</form>
 
 
-  {% for message in messages %}
-    <p style="color:red">{{ message }}</p>
-  {% endfor %}
-
-  <p>この得意先を削除（論理削除）します。よろしいですか？</p>
-
-  <table border="1">
-    <tr><th>得意先コード</th><td>{{ customer.customer_code }}</td></tr>
-    <tr><th>得意先名</th><td>{{ customer.customer_name }}</td></tr>
-    <tr><th>電話番号</th><td>{{ customer.customer_telno }}</td></tr>
-    <tr><th>郵便番号</th><td>{{ customer.customer_postalcode }}</td></tr>
-    <tr><th>住所</th><td>{{ customer.customer_address }}</td></tr>
-    <tr><th>割引率</th><td>{{ customer.discount_rate }}</td></tr>
-  </table>
-
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">削除する</button>
-    <a href="{% url 'customer_delete_select' %}">キャンセル</a>
-  </form>
-</body>
-</html>
+{% endblock %}
