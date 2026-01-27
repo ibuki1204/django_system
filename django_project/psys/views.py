@@ -24,19 +24,35 @@ def index(request):
 @login_required
 def customer_search(request):
     customer_code = request.GET.get("customer_code", "").strip()
+    searched = "search" in request.GET
 
-    if customer_code:
-        customers = Customer.objects.filter(delete_flag=0, customer_code=customer_code)
+    customers = Customer.objects.none()
 
-        if not customers.exists():
+    if searched:
+        qs = Customer.objects.filter(delete_flag=0)
+
+        if customer_code:
+            qs = qs.filter(customer_code__startswith=customer_code)
+        else:
+            qs = Customer.objects.none()
+
+        count = qs.count()
+
+        if count == 0:
             messages.error(request, "該当する得意先がありません")
-    else:
-        customers = Customer.objects.none()
+        elif count > 1:
+            messages.error(request, "得意先コードを特定できません。6桁で入力してください。")
+        else:
+            customers = qs  # 1件だけ
 
     return render(request, "psys/customer_search.html", {
         "customers": customers,
         "customer_code": customer_code,
+        "searched": searched,
     })
+
+
+
 
 
 @login_required

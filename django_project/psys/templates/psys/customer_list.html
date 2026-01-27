@@ -4,16 +4,16 @@
 {% block page_title %}得意先一覧{% endblock %}
 
 {% block content %}
+
 <table class="list-table">
   <thead>
     <tr>
       <th style="width:120px;">得意先コード</th>
-      <th style="width:120px;">得意先名</th>
-      <th style="width:150px;">電話番号</th>
+      <th style="width:160px;">得意先名</th>
+      <th style="width:160px;">電話番号</th>
       <th style="width:120px;">郵便番号</th>
-      <th style="width:280px;">住所</th>
+      <th style="width:320px;">住所</th>
       <th style="width:80px;">割引率</th>
-      <th style="width:100px;">操作</th>
     </tr>
   </thead>
   <tbody>
@@ -25,14 +25,13 @@
         <td>{{ c.customer_postalcode }}</td>
         <td>{{ c.customer_address }}</td>
         <td style="text-align:right;">{{ c.discount_rate }}</td>
-        <td style="text-align:center;">
-          <a href="{% url 'customer_update_select' %}">更新</a> /
-          <a href="{% url 'customer_delete_select' %}">削除</a>
-        </td>
       </tr>
     {% empty %}
-      <tr><td colspan="7" style="text-align:center;">得意先がありません</td></tr>
+      <tr>
+        <td colspan="6" style="text-align:center;">得意先データがありません</td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
+
 {% endblock %}
