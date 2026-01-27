@@ -28,6 +28,8 @@ urlpatterns = [
 
     path("orders/<str:order_no>/details/", views.order_details, name="order_details"),
 
+    # 新規登録（追加）
+    path("signup/", views.signup, name="signup"),
 
 
 
