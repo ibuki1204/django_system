@@ -1,48 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>得意先別集計</title>
-</head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>得意先別集計</h1>
-<p>ようこそ、{{ request.user.first_name|default:request.user.username }} さん</p>
+{% block title %}得意先別集計{% endblock %}
+{% block page_title %}得意先別集計{% endblock %}
 
-<form method="get">
-  <label>開始日：<input type="date" name="from" value="{{ date_from }}"></label>
-  <label>終了日：<input type="date" name="to" value="{{ date_to }}"></label>
-  <button type="submit">集計</button>
+{% block side_menu %}
+  <a href="{% url 'main_menu' %}">
+    <button type="button" class="btn">管理メニュー</button>
+  </a>
+  <a href="{% url 'logout' %}">
+    <button type="button" class="btn">ログアウト</button>
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<form method="get" style="text-align:center; margin-bottom:12px;">
+  <span style="font-size:12px; margin-right:6px;">開始日：</span>
+  <input type="date" name="from" value="{{ date_from }}"
+         style="height:22px; font-size:12px;">
+
+  <span style="font-size:12px; margin:0 6px 0 12px;">終了日：</span>
+  <input type="date" name="to" value="{{ date_to }}"
+         style="height:22px; font-size:12px;">
+
+  <button type="submit" style="height:26px; margin-left:8px;">集計</button>
 </form>
 
-<table border="1">
-  <tr>
-    <th>得意先コード</th>
-    <th>得意先名</th>
-    <th>受注件数</th>
-    <th>受注合計</th>
-  </tr>
+<table class="list-table">
+  <thead>
+    <tr>
+      <th style="width:120px;">得意先コード</th>
+      <th style="width:160px;">得意先名</th>
+      <th style="width:90px;">受注件数</th>
+      <th style="width:120px;">受注合計</th>
+    </tr>
+  </thead>
 
-  {% for row in summary %}
-  <tr>
-    <td>
-        <a href="{% url 'customer_summary_detail' row.customer_code__customer_code %}?from={{ date_from }}&to={{ date_to }}">
-        {{ row.customer_code__customer_code }}
-        </a>
-    </td>
-    <td>{{ row.customer_code__customer_name }}</td>
-    <td>{{ row.order_count }}</td>
-    <td>{{ row.total_amount }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="4">データがありません</td></tr>
-  {% endfor %}
+  <tbody>
+    {% for row in summary %}
+      <tr>
+        <td>
+          <a href="{% url 'customer_summary_detail' row.customer_code__customer_code %}?from={{ date_from }}&to={{ date_to }}">
+            {{ row.customer_code__customer_code }}
+          </a>
+        </td>
+        <td>{{ row.customer_code__customer_name }}</td>
+        <td style="text-align:right;">{{ row.order_count }}</td>
+        <td style="text-align:right;">{{ row.total_amount|default:0 }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4" style="text-align:center;">データがありません</td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
-<p>
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-
-</body>
-</html>
+{% endblock %}
