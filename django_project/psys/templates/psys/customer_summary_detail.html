@@ -1,59 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>受注一覧（得意先別）</title>
-</head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>受注一覧（得意先別）</h1>
-<p>ようこそ、{{ request.user.first_name|default:request.user.username }} さん</p>
+{% block title %}受注一覧（得意先別）{% endblock %}
+{% block page_title %}受注一覧（得意先別）{% endblock %}
 
-<p>
+{% block side_menu %}
+  <a href="{% url 'customer_summary' %}?from={{ date_from }}&to={{ date_to }}">
+    <button type="button" class="btn">得意先別集計</button>
+  </a>
+  <a href="{% url 'main_menu' %}">
+    <button type="button" class="btn">管理メニュー</button>
+  </a>
+  <a href="{% url 'logout' %}">
+    <button type="button" class="btn">ログアウト</button>
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<div style="text-align:center; font-size:12px; margin-bottom:10px;">
   得意先：{{ customer.customer_code }} / {{ customer.customer_name }}
-</p>
+</div>
 
 {% if date_from or date_to %}
-<p>
-  期間：{{ date_from|default:"(指定なし)" }} ～ {{ date_to|default:"(指定なし)" }}
-</p>
+  <div style="text-align:center; font-size:12px; margin-bottom:10px;">
+    期間：{{ date_from|default:"(指定なし)" }} ～ {{ date_to|default:"(指定なし)" }}
+  </div>
 {% endif %}
 
-<table border="1">
-  <tr>
-    <th>受注番号</th>
-    <th>受注日</th>
-    <th>納品日</th>
-    <th>担当者</th>
-    <th>合計金額</th>
-    <th>明細数</th>
-  </tr>
+<table class="list-table">
+  <thead>
+    <tr>
+      <th style="width:110px;">受注番号</th>
+      <th style="width:110px;">受注日</th>
+      <th style="width:110px;">納品日</th>
+      <th style="width:220px;">担当者</th>
+      <th style="width:110px;">合計金額</th>
+      <th style="width:90px;">明細数</th>
+    </tr>
+  </thead>
 
-  {% for o in orders %}
-  <tr>
-    <td><a href="{% url 'order_details' o.order_no %}">{{ o.order_no }}</a></td>
-    <td>{{ o.order_date }}</td>
-    <td>{{ o.deliver_date }}</td>
-    <td>
-      {% if o.employee_no %}
-        {{ o.employee_no.employee_name }}（{{ o.employee_no.employee_no }}）
-      {% else %}
-        -
-      {% endif %}
-    </td>
-    <td>{{ o.total_price }}</td>
-    <td>{{ o.detail_num }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="6">受注データがありません</td></tr>
-  {% endfor %}
+  <tbody>
+    {% for o in orders %}
+      <tr>
+        <td>
+          <a href="{% url 'order_details' o.order_no %}">
+            {{ o.order_no }}
+          </a>
+        </td>
+        <td>{{ o.order_date }}</td>
+        <td>{{ o.deliver_date }}</td>
+        <td>
+          {% if o.employee_no %}
+            {{ o.employee_no.employee_name }}（{{ o.employee_no.employee_no }}）
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td style="text-align:right;">{{ o.total_price }}</td>
+        <td style="text-align:right;">{{ o.detail_num }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;">受注データがありません</td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
-<p>
-  <a href="{% url 'customer_summary' %}?from={{ date_from }}&to={{ date_to }}">得意先別集計へ戻る</a> /
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-
-</body>
-</html>
+{% endblock %}

@@ -54,6 +54,11 @@
       margin: 8px 0;
     }
 
+    .main {
+      min-width: 0;
+    }
+
+
     /* 一覧テーブル（共通） */
     table.list-table {
       border-collapse: collapse;
@@ -99,6 +104,23 @@
       box-sizing: border-box;
       font-size: 12px;
     }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+    .side .btn {
+        width: 160px;
+    }
+    }
+
+
 
     .btn-area { text-align: center; margin-top: 12px; }
     .btn-area button { width: 90px; padding: 4px 0; font-size: 12px; }

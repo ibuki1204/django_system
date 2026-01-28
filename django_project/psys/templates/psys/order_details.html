@@ -1,16 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>受注明細</title>
-</head>
-<body>
+{% extends "psys/base.html" %}
 
-<h1>受注明細</h1>
-<p>ようこそ、{{ request.user.first_name|default:request.user.username }} さん</p>
+{% block title %}受注明細{% endblock %}
+{% block page_title %}受注明細{% endblock %}
 
-<p>
+{% block side_menu %}
+  <button type="button" class="btn" onclick="history.back()">戻る</button>
+
+  <a href="{% url 'customer_summary' %}">
+    <button type="button" class="btn">得意先別集計</button>
+  </a>
+
+  <a href="{% url 'main_menu' %}">
+    <button type="button" class="btn">管理メニュー</button>
+  </a>
+
+  <a href="{% url 'logout' %}">
+    <button type="button" class="btn">ログアウト</button>
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<div style="font-size:12px; line-height:1.8; margin-bottom:12px;">
   受注番号：{{ order.order_no }}<br>
+
   得意先：
   {% if order.customer_code %}
     {{ order.customer_code.customer_code }} / {{ order.customer_code.customer_name }}
@@ -18,37 +31,38 @@
     -
   {% endif %}
   <br>
+
   受注日：{{ order.order_date }} ／ 納品日：{{ order.deliver_date }}
-</p>
+</div>
 
-<table border="1">
-  <tr>
-    <th>商品コード</th>
-    <th>商品名</th>
-    <th>数量</th>
-    <th>金額</th>
-  </tr>
+<table class="list-table">
+  <thead>
+    <tr>
+      <th style="width:120px;">商品コード</th>
+      <th style="width:360px;">商品名</th>
+      <th style="width:90px;">数量</th>
+      <th style="width:120px;">金額</th>
+    </tr>
+  </thead>
 
-  {% for d in details %}
-  <tr>
-    <td>{{ d.item_code.item_code }}</td>
-    <td>{{ d.item_code.item_name }}</td>
-    <td>{{ d.order_num }}</td>
-    <td>{{ d.order_price }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="4">明細がありません</td></tr>
-  {% endfor %}
+  <tbody>
+    {% for d in details %}
+      <tr>
+        <td>{{ d.item_code.item_code }}</td>
+        <td>{{ d.item_code.item_name }}</td>
+        <td style="text-align:right;">{{ d.order_num }}</td>
+        <td style="text-align:right;">{{ d.order_price }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4" style="text-align:center;">明細がありません</td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
-<p>明細合計：{{ total_detail }}</p>
+<div style="margin-top:10px; font-size:12px;">
+  明細合計：<b>{{ total_detail }}</b>
+</div>
 
-<p>
-  <a href="javascript:history.back()">前の画面へ戻る</a> /
-  <a href="{% url 'customer_summary' %}">得意先別集計へ</a> /
-  <a href="{% url 'main_menu' %}">管理メニューへ</a> /
-  <a href="{% url 'logout' %}">ログアウト</a>
-</p>
-
-</body>
-</html>
+{% endblock %}
