@@ -1,29 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>新規登録</title>
-</head>
-<body>
-  <h1>新規登録</h1>
+{% extends "psys/base.html" %}
 
+{% block title %}新規登録{% endblock %}
+{% block page_title %}新規登録{% endblock %}
+
+{% block side_menu %}
   <a href="{% url 'index' %}">
-    <button type="button">top</button>
+    <button type="button" class="btn" style="width:60px;">top</button>
   </a>
+{% endblock %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <p style="color:red;">{{ message }}</p>
-    {% endfor %}
-  {% endif %}
+{% block content %}
 
-  <form method="post">
-    {% csrf_token %}
-    <p>従業員番号：<input type="text" name="employee_no" maxlength="6"></p>
-    <p>従業員名：<input type="text" name="employee_name" maxlength="50"></p>
-    <p>パスワード：<input type="password" name="password1" maxlength="255"></p>
-    <p>パスワード（確認）：<input type="password" name="password2" maxlength="255"></p>
+<form method="post">
+  {% csrf_token %}
+
+  <table class="form-table">
+    <tr>
+      <td class="label">従業員番号</td>
+      <td>
+        <input type="text" name="employee_no" maxlength="6"
+               value="{{ request.POST.employee_no|default:'' }}">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">従業員名</td>
+      <td>
+        <input type="text" name="employee_name" maxlength="50"
+               value="{{ request.POST.employee_name|default:'' }}">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">パスワード</td>
+      <td>
+        <input type="password" name="password1" maxlength="255">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">パスワード（確認）</td>
+      <td>
+        <input type="password" name="password2" maxlength="255">
+      </td>
+    </tr>
+  </table>
+
+  <div class="btn-area">
     <button type="submit">登録</button>
-  </form>
-</body>
-</html>
+  </div>
+</form>
+
+{% endblock %}
