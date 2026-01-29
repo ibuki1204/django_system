@@ -59,20 +59,30 @@
     }
 
 
+    
     /* 一覧テーブル（共通） */
     table.list-table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 12px;
-      table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+
+    /* ★狭い画面で崩れないようにする */
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+
+    /* fixed は列が潰れやすいので外す */
+    table-layout: auto;
     }
+
     table.list-table th,
     table.list-table td {
       border: 1px solid #999;
       padding: 6px 8px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      /*overflow: hidden;*/
+      /*text-overflow: ellipsis;*/
     }
     table.list-table th {
       background: #f3f3f3;
@@ -105,11 +115,7 @@
       font-size: 12px;
     }
 
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    
 
     @media (max-width: 900px) {
     .layout {
